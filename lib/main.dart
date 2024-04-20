@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bird_tracker/menu.dart';
+import 'package:bird_tracker/screens/menu.dart';
 
 
 void main() {

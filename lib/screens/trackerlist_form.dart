@@ -12,6 +12,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
   String _sciName = "";
+  int _total = 0;
   String _ordo = "";
   String _origin = "";
   
@@ -125,6 +126,33 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Jumlah Spesies Burung",
+                  labelText: "Jumlah Spesies Burung",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _total = int.tryParse(value!) ?? 0;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Jumlah Spesies Burung tidak boleh kosong!";
+                  }
+                  if (int.tryParse(value)== null) {
+                    return "Jumlah Spesies Burung harus berupa angka";
+                  }
+
+                  return null;
+                },
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -135,7 +163,6 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      if (_formKey.currentState!.validate()) {
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -149,6 +176,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                                     Text('Nama Ilmiah Burung: $_sciName'),
                                     Text('Ordo Burung: $_ordo'),
                                     Text('Asal Burung: $_origin'),
+                                    Text('Jumlah Spesies : $_total')
                                   ],
                                 ),
                               ),
@@ -165,7 +193,6 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                           },
                         );
                       }
-                    }
                   },
                   child: const Text(
                     "Save",

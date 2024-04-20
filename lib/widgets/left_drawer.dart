@@ -1,6 +1,6 @@
-import 'package:bird_tracker/trackerlist_form.dart';
+import 'package:bird_tracker/screens/trackerlist_form.dart';
 import 'package:flutter/material.dart';
-import 'package:bird_tracker/menu.dart';
+import 'package:bird_tracker/screens/menu.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
