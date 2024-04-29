@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bird_tracker/screens/trackerlist_form.dart';
-
+import 'package:anime_series_tracker/screens/trackerlist_form.dart';
+import 'package:anime_series_tracker/screens/list_anime.dart';
 
 class TrackerCard extends StatelessWidget {
   final TrackerItem item;
@@ -19,27 +19,30 @@ class TrackerCard extends StatelessWidget {
           //   ..hideCurrentSnackBar()
           //   ..showSnackBar(SnackBar(
           //       content: Text("Kamu telah menekan tombol ${item.name}!")));
-          if (item.name == "Tambah Burung") {
-             ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(
-                content: Text("Kamu telah menekan tombol Tambah Burung!")));
+          if (item.name == "Tambah Anime") {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(const SnackBar(
+                  content: Text("Kamu telah menekan tombol Tambah Anime!")));
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const TrackerFormPage()));
-          } 
-          if (item.name == "Lihat Burung") {
+          } else if (item.name == "Lihat Anime") {
             ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(
-                content: Text("Kamu telah menekan tombol Lihat Burung!")));
+              ..hideCurrentSnackBar()
+              ..showSnackBar(const SnackBar(
+                  content: Text("Kamu telah menekan tombol Lihat Anime!")));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AnimePage()),
+            );
           }
           if (item.name == "Logout") {
             ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(
-                content: Text("Kamu telah menekan tombol Logout!")));
+              ..hideCurrentSnackBar()
+              ..showSnackBar(const SnackBar(
+                  content: Text("Kamu telah menekan tombol Logout!")));
           }
         },
         child: Container(

@@ -205,7 +205,7 @@ samples, guidance on mobile development, and a full API reference.
       <br>
       <br>
 
-  Penerapan Clean Architecture pada aplikasi Flutter melibatkan pemisahan kode menjadi beberapa lapisan yang terisolasi, seperti Presentasi (UI), Logika Bisnis (Domain), dan Data. Berikut adalah langkah-langkah umum untuk menerapkan Clean Architecture dalam aplikasi Flutter: 1. Domain Layer: Ini adalah lapisan inti dari aplikasi Anda yang berisi logika bisnis atau aturan bisnis. Di sini, Anda mendefinisikan model-data, aturan validasi, operasi bisnis, dan antarmuka repositori yang digunakan oleh lapisan Data. Lapisan ini harus bersih dari setiap ketergantungan pada platform tertentu seperti Flutter. 2. Data Layer: Lapisan ini bertanggung jawab atas komunikasi dengan sumber data eksternal seperti API, database lokal, atau penyimpanan berkas. Implementasi repositori yang didefinisikan di lapisan Domain dilakukan di sini. Namun, lapisan ini sendiri tidak boleh mengetahui detail platform tertentu seperti Flutter. Penggunaan konsep seperti Repository Pattern atau Data Provider adalah umum di sini. 3. Presentation Layer: Ini adalah lapisan yang berurusan langsung dengan UI dan interaksi pengguna. Di sini, Anda mengimplementasikan tampilan, widget, dan logika yang terkait dengan tampilan aplikasi. Presenter atau ViewModel bertanggung jawab untuk menerima input dari pengguna, memprosesnya menggunakan logika bisnis dari lapisan Domain, dan kemudian menampilkan hasilnya. Lapisan Presentasi harus terpisah dari detail implementasi platform seperti Flutter. 4. Dependency Injection (DI): Menggunakan pola injeksi ketergantungan adalah praktik yang baik dalam memisahkan lapisan-lapisan ini. Anda dapat menggunakan paket seperti get_it atau provider untuk mengelola ketergantungan. 5. Tes: Setiap lapisan harus dapat diuji secara terpisah dengan mudah. Lapisan Domain dan Logika Bisnis biasanya diuji secara unit, sedangkan lapisan Presentasi diuji secara widget atau integrasi. 6. Flutter Module: Biasanya, Anda akan memiliki modul Flutter terpisah yang bertanggung jawab atas tampilan dan navigasi antarmuka pengguna. Modul ini akan menggunakan lapisan Presentasi dari Clean Architecture Anda. 7. Implementasi Cross-cutting Concerns: Hal seperti logging, manajemen keadaan (state management), navigasi, dan validasi input adalah contoh dari kekhawatiran yang memotong lintas lapisan. Mereka harus diimplementasikan dengan cara yang memisahkan dari lapisan Domain dan Presentasi.
+  Penerapan Clean Architecture pada aplikasi Flutter melibatkan pemisahan kode menjadi beberapa lapisan yang terisolasi, seperti Presentasi (UI), Logika Bisnis (Domain), dan Data. Berikut adalah langkah-langkah umum untuk menerapkan Clean Architecture dalam aplikasi Flutter: 1. Domain Layer: Ini adalah lapisan inti dari aplikasi Anda yang berisi logika bisnis atau aturan bisnis. Di sini, Anda mendefinisikan model-data, aturan validasi, operasi bisnis, dan antarmuka repositori yang digunakan oleh lapisan Data. Lapisan ini harus bersih dari setiap ketergantungan pada platform tertentu seperti Flutter. 2. Data Layer: Lapisan ini bertanggung jawab atas komunikasi dengan sumber data eksternal seperti API, database lokal, atau penyimpanan berkas. Implementasi repositori yang didefinisikan di lapisan Domain dilakukan di sini. Namun, lapisan ini sendiri tidak boleh mengetahui detail platform tertentu seperti Flutter. Penggunaan konsep seperti Repository Pattern atau Data Provider adalah umum di sini. 3. Presentation Layer: Ini adalah lapisan yang berurusan langsung dengan UI dan interaksi pengguna. Di sini, Anda mengimplementasikan tampilan, widget, **dan** logika yang terkait dengan tampilan aplikasi. Presenter atau ViewModel bertanggung jawab untuk menerima input dari pengguna, memprosesnya menggunakan logika bisnis dari lapisan Domain, dan kemudian menampilkan hasilnya. Lapisan Presentasi harus terpisah dari detail implementasi platform seperti Flutter. 4. Dependency Injection (DI): Menggunakan pola injeksi ketergantungan adalah praktik yang baik dalam memisahkan lapisan-lapisan ini. Anda dapat menggunakan paket seperti get_it atau provider untuk mengelola ketergantungan. 5. Tes: Setiap lapisan harus dapat diuji secara terpisah dengan mudah. Lapisan Domain dan Logika Bisnis biasanya diuji secara unit, sedangkan lapisan Presentasi diuji secara widget atau integrasi. 6. Flutter Module: Biasanya, Anda akan memiliki modul Flutter terpisah yang bertanggung jawab atas tampilan dan navigasi antarmuka pengguna. Modul ini akan menggunakan lapisan Presentasi dari Clean Architecture Anda. 7. Implementasi Cross-cutting Concerns: Hal seperti logging, manajemen keadaan (state management), navigasi, dan validasi input adalah contoh dari kekhawatiran yang memotong lintas lapisan. Mereka harus diimplementasikan dengan cara yang memisahkan dari lapisan Domain dan Presentasi.
   <br><br>
   Penerapan Clean Architecture di Flutter memungkinkan untuk memisahkan logika bisnis dari detail implementasi platform, memfasilitasi pengujian yang lebih baik, dan meningkatkan ketahanan terhadap perubahan dalam teknologi atau kebutuhan aplikasi.
 
@@ -297,7 +297,7 @@ samples, guidance on mobile development, and a full API reference.
     child: Column(
         children: [
             Text(
-                'Book Tracker',
+                'Bird Tracker',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 30,
@@ -557,3 +557,27 @@ samples, guidance on mobile development, and a full API reference.
    ```
 
 - [x] Melakukan add-commit-push ke GitHub.
+
+
+## Tugas 9
+
+- [x] Memastikan deployment ke PWS proyek tugas Django kamu telah berjalan dengan baik.
+- [x] Membuat halaman login pada proyek tugas Flutter.
+- [x] Mengintegrasikan sistem autentikasi Django dengan proyek tugas Flutter.
+- [x] Membuat model kustom sesuai dengan proyek aplikasi Django.
+- [x] Membuat halaman yang berisi daftar semua item yang terdapat pada ** JSON diendpoint Django yang telah kamu deploy.
+- [x] Tampilkan name, amount, dan description dari masing-masing item pada halaman ini.
+- [x] Membuat halaman detail untuk setiap item yang terdapat pada halaman daftar Item.
+- [x] Halaman ini dapat diakses dengan menekan salah satu item pada halaman daftar Item.
+- [x] Tampilkan seluruh atribut pada model item kamu pada halaman ini.
+- [x] Tambahkan tombol untuk kembali ke halaman daftar item.
+- [x] Menjawab beberapa pertanyaan berikut pada README.md pada root folder (silakan modifikasi README.md yang telah kamu buat sebelumnya; tambahkan subjudul untuk setiap tugas).
+- [x] Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+- [x] Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+- [x] Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+- [x] Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+- [x] Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+- [x] Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+- [x] Melakukan add-commit-push ke GitHub.
+
+

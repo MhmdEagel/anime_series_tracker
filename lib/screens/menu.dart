@@ -1,6 +1,6 @@
-import 'package:bird_tracker/widgets/left_drawer.dart';
+import 'package:anime_series_tracker/widgets/left_drawer.dart';
 import 'package:flutter/material.dart';
-import "package:bird_tracker/widgets/tracker_card.dart";
+import "package:anime_series_tracker/widgets/tracker_card.dart";
 
 
 
@@ -8,12 +8,12 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
   final List<TrackerItem> items = [
-    TrackerItem("Lihat Burung", Icons.radar, Colors.brown[800]),
-    TrackerItem("Tambah Burung", Icons.add_box, Colors.purple[800]),
+    TrackerItem("Lihat Anime", Icons.radar, Colors.brown[800]),
+    TrackerItem("Tambah Anime", Icons.add_box, Colors.purple[800]),
     TrackerItem("Logout", Icons.logout, Colors.red[800]),
   ];
 
-  // This widget is the home page of your application. It is stateful, meaning
+  // This widget is the home pagwwe of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
 
@@ -26,7 +26,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Bird Tracker',
+          'Anime Tracker',
         ),
       ),
       body: SingleChildScrollView(

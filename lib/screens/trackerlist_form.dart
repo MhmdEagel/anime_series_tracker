@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:bird_tracker/widgets/left_drawer.dart';
+import 'package:anime_series_tracker/widgets/left_drawer.dart';
+import 'package:anime_series_tracker/screens/menu.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class TrackerFormPage extends StatefulWidget {
   const TrackerFormPage({super.key});
@@ -11,18 +15,21 @@ class TrackerFormPage extends StatefulWidget {
 class _TrackerFormPageState extends State<TrackerFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
-  String _sciName = "";
-  int _total = 0;
-  String _ordo = "";
-  String _origin = "";
-  
+  int _episodes = 0;
+  String _synopsis = "";
+  double _rating = 0;
+  String _studio = "";
+  String _genre = "";
+  String _date = "";
+
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Form Tambah Burung',
+            'Form Tambah Anime',
           ),
         ),
         backgroundColor: Colors.indigo,
@@ -38,8 +45,8 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Nama Burung",
-                  labelText: "Nama Burung",
+                  hintText: "Nama",
+                  labelText: "Nama Anime",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -51,7 +58,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Nama Burung tidak boleh kosong!";
+                    return "Nama Anime tidak boleh kosong!";
                   }
                   return null;
                 },
@@ -61,94 +68,144 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Nama Ilmiah",
-                  labelText: "Nama Ilmiah",
+                  hintText: "Episodes",
+                  labelText: "Jumlah Episode Anime",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
                 onChanged: (String? value) {
                   setState(() {
-                    _sciName = value!;
+                    _episodes = int.tryParse(value!) ?? 0;
                   });
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Nama Ilmiah tidak boleh kosong!";
+                    return "Episodes tidak boleh kosong!";
                   }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Ordo Burung",
-                  labelText: "Ordo Burung",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _ordo = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ordo Burung tidak boleh kosong!";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Asal Daerah Burung",
-                  labelText: "Asal Daerah Burung",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _origin = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Asal Daerah Burung tidak boleh kosong!";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Jumlah Spesies Burung",
-                  labelText: "Jumlah Spesies Burung",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _total = int.tryParse(value!) ?? 0;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Jumlah Spesies Burung tidak boleh kosong!";
-                  }
-                  if (int.tryParse(value)== null) {
-                    return "Jumlah Spesies Burung harus berupa angka";
+                  if (int.tryParse(value) == null) {
+                    return "Episodes harus berupa angka";
                   }
 
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Synopsis",
+                  labelText: "Synopsis",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _synopsis = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Synopsis tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Rating",
+                  labelText: "Rating Anime",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _rating = double.tryParse(value!) ?? 0;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Rating tidak boleh kosong!";
+                  }
+                  if (int.tryParse(value) == null) {
+                    return "Rating harus berupa angka";
+                  }
+
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Studio",
+                  labelText: "Studio",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _studio = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Studio tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Tanggal Rilis",
+                  labelText: "Tanggal Rilis",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _date = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Tanggal Rilis tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Genre",
+                  labelText: "Genre",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _genre = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Genre tidak boleh kosong!";
+                  }
                   return null;
                 },
               ),
@@ -163,36 +220,74 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Burung berhasil tersimpan'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Nama Burung: $_name'),
-                                    Text('Nama Ilmiah Burung: $_sciName'),
-                                    Text('Ordo Burung: $_ordo'),
-                                    Text('Asal Burung: $_origin'),
-                                    Text('Jumlah Spesies : $_total')
-                                  ],
-                                ),
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Anime berhasil tersimpan'),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Nama Anime: $_name'),
+                                  Text('Jumlah Episode: $_episodes'),
+                                  Text('Rating: $_rating'),
+                                  Text('Genre: $_genre'),
+                                  Text('Studio: $_studio'),
+                                  Text('Tanggal Rilis: $_date'),
+                                  Text('Synopsis: $_synopsis'),
+                                ],
                               ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    // Kirim ke Django dan tunggu respons
+                                    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                                    final response = await request.postJson(
+                                      "http://127.0.0.1:8000/create-flutter/",
+                                      jsonEncode(<String, String>{
+                                        'name': _name,
+                                        'episodes': _episodes.toString(),
+                                        'synopsis': _synopsis,
+                                        'rating': _rating.toString(),
+                                        'studio': _studio,
+                                        'genre': _genre,
+                                        'date': _date.toString()
+                                        // TODO: Sesuaikan field data sesuai dengan aplikasimu
+                                      }),
+                                    );
+                                    if (context.mounted) {
+                                      if (response['status'] == 'success') {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Anime baru berhasil disimpan!"),
+                                        ));
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyHomePage()),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Terdapat kesalahan, silakan coba lagi."),
+                                        ));
+                                      }
+                                    }
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: const Text(
                     "Save",
