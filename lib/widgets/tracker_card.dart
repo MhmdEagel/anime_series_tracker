@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:anime_series_tracker/screens/trackerlist_form.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:anime_series_tracker/screens/list_anime.dart';
+import 'package:anime_series_tracker/screens/login.dart';
 
 class TrackerCard extends StatelessWidget {
   final TrackerItem item;
@@ -9,11 +12,12 @@ class TrackerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       color: Colors.indigo,
       child: InkWell(
         // Area responsive terhadap sentuhan
-        onTap: () {
+        onTap: () async {
           // Memunculkan SnackBar ketika diklik
           // ScaffoldMessenger.of(context)
           //   ..hideCurrentSnackBar()
@@ -39,10 +43,28 @@ class TrackerCard extends StatelessWidget {
             );
           }
           if (item.name == "Logout") {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(const SnackBar(
-                  content: Text("Kamu telah menekan tombol Logout!")));
+            final response = await request.logout(
+                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                "http://127.0.0.1:8000/auth/logout/");
+            String message = response["message"];
+            if (context.mounted) {
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("$message Sampai jumpa, $uname."),
+                ));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                  ),
+                );
+              }
+            }
           }
         },
         child: Container(

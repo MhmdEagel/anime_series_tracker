@@ -1,30 +1,29 @@
+import 'package:anime_series_tracker/screens/list_anime.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:anime_series_tracker/models/anime.dart';
 import 'package:anime_series_tracker/widgets/left_drawer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:anime_series_tracker/screens/detail_anime.dart';
 
-class AnimePage extends StatefulWidget {
-  const AnimePage({Key? key}) : super(key: key);
+class DetailAnime extends StatefulWidget {
+  const DetailAnime({super.key, this.id});
 
+  final int? id;
   @override
-  State<AnimePage> createState() => _AnimePageState();
+  State<DetailAnime> createState() => _DetailAnimeState();
 }
 
-class _AnimePageState extends State<AnimePage> {
+class _DetailAnimeState extends State<DetailAnime> {
   Future<List<Anime>> fetchAnime() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse('http://127.0.0.1:8000/json/');
+    var url = Uri.parse('http://127.0.0.1:8000/json/${widget.id}');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
-
     // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
-
     // melakukan konversi data json menjadi object Anime
     List<Anime> listAnime = [];
     for (var d in data) {
@@ -90,15 +89,17 @@ class _AnimePageState extends State<AnimePage> {
                         Text(convertDateTimeDisplay(snapshot
                             .data![index].fields.releaseDate
                             .toString())),
+                        const SizedBox(height: 10),
                         ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DetailAnime(id: snapshot.data![index].pk,),
+                                    builder: (context) => const AnimePage(),
                                   ));
+                            
                             },
-                            child: const Text("See Detail"))
+                            child: const Text("Back to all items"))
                       ],
                     ),
                   ),

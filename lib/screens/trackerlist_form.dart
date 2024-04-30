@@ -4,6 +4,8 @@ import 'package:anime_series_tracker/widgets/left_drawer.dart';
 import 'package:anime_series_tracker/screens/menu.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:intl/intl.dart';
+
 
 class TrackerFormPage extends StatefulWidget {
   const TrackerFormPage({super.key});
@@ -20,7 +22,14 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
   double _rating = 0;
   String _studio = "";
   String _genre = "";
-  String _date = "";
+  // String _date = "";
+  TextEditingController dateInput = TextEditingController();
+
+  @override
+  void initState() {
+    dateInput.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +176,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                controller: dateInput,
                 decoration: InputDecoration(
                   hintText: "Tanggal Rilis",
                   labelText: "Tanggal Rilis",
@@ -174,10 +184,21 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _date = value!;
-                  });
+                readOnly: true,
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1950),
+                      //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2100));
+
+                  if (pickedDate != null) {
+                    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);//formatted date output using intl package =>  2021-03-16
+                    setState(() {
+                      dateInput.text = formattedDate; //set output date to TextField value.
+                    });
+                  } else {}
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -234,7 +255,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                                   Text('Rating: $_rating'),
                                   Text('Genre: $_genre'),
                                   Text('Studio: $_studio'),
-                                  Text('Tanggal Rilis: $_date'),
+                                  Text('Tanggal Rilis: $dateInput.text'),
                                   Text('Synopsis: $_synopsis'),
                                 ],
                               ),
@@ -255,7 +276,7 @@ class _TrackerFormPageState extends State<TrackerFormPage> {
                                         'rating': _rating.toString(),
                                         'studio': _studio,
                                         'genre': _genre,
-                                        'date': _date.toString()
+                                        'date': dateInput.text,
                                         // TODO: Sesuaikan field data sesuai dengan aplikasimu
                                       }),
                                     );
