@@ -1,4 +1,4 @@
-# bird_tracker
+# anime_tracker
 
 A new Flutter project.
 
